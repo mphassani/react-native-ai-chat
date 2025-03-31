@@ -6,7 +6,7 @@ import * as Clipboard from 'expo-clipboard';
 import { useClipboard } from '../hooks/useClipboard';
 import ClipboardNotificationBanner from './ClipboardNotificationBanner';
 import { getTheme, ThemeColors, ColorScheme } from '../utils/theme';
-import Ionicons from 'react-native-elements/dist/icons/Ionicons';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 // Define Message type
 export type Message = {
@@ -246,7 +246,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
             backgroundColor: colors.background,
           }}
         >
-          <Ionicons name="trash-outline" size={20} color="#888" />
+          <Icon name="trash-outline" size={20} color="#888" />
         </TouchableOpacity>
       )}
       
@@ -330,7 +330,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
                       }, 2000);
                     }}
                   >
-                    <Ionicons
+                    <Icon
                       name={item.copied ? "checkmark-circle" : "copy-outline"}
                       size={18}
                       color={item.copied ? "#4caf50" : "#666"}
@@ -380,7 +380,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
               onPress={sendMessage}
               containerStyle={{ marginLeft: 8 }}
               loading={isLoading}
-              icon={<Ionicons name="send" size={24} color={colors.tint} />}
+              icon={<Icon name="send" size={24} color={colors.tint} />}
             />
           }
           autoCapitalize="none"
