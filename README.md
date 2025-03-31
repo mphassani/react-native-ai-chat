@@ -1,6 +1,6 @@
 # React Native AI Chat
 
-A React Native package for implementing AI-powered chat interfaces with minimal setup. Extracted from a transliteration app, this package provides reusable components for building AI chat experiences.
+A React Native package for implementing AI-powered chat interfaces with minimal setup. This package provides reusable components for building AI chat experiences with a clean, customizable UI.
 
 ## Features
 
@@ -9,7 +9,6 @@ A React Native package for implementing AI-powered chat interfaces with minimal 
 - 🌙 Dark mode support
 - 💬 Message history management
 - 🔑 API key management for AI providers
-- 🔒 Free/premium tier limits support
 - 📱 Optimized for mobile
 
 ## Installation
@@ -72,15 +71,6 @@ import { AIChatProvider } from 'react-native-ai-chat';
   welcomeMessage="Hello! I'm here to help with translations."
   placeholder="Type your message here..."
   colorScheme="dark"
-  tier="premium"
-  limits={{
-    MAX_DAILY_MESSAGES: 10,
-    MAX_HISTORY_ITEMS: 50
-  }}
-  onLimitReached={() => {
-    // Show upgrade prompt
-    Alert.alert('Limit Reached', 'Upgrade to premium for unlimited messages');
-  }}
   generatePrompt={(message, language) => {
     return `Translate this to ${language}: ${message}`;
   }}
@@ -100,7 +90,7 @@ Lower-level component for displaying chat messages with more customization optio
 import { ChatMessages, useMessages } from 'react-native-ai-chat';
 
 function ChatScreen() {
-  const { addMessage, clearMessages, canSendMessage } = useMessages();
+  const { addMessage, clearMessages } = useMessages();
   const [messages, setMessages] = useState([
     { id: '1', text: 'Hello!', isUser: false }
   ]);

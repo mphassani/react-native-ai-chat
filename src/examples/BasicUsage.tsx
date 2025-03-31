@@ -53,15 +53,6 @@ const BasicUsage: React.FC = () => {
           colorScheme={colorScheme}
           generatePrompt={generatePrompt}
           placeholder="Ask me anything..."
-          tier="free"
-          limits={{
-            MAX_DAILY_MESSAGES: 10,
-            MAX_HISTORY_ITEMS: 50
-          }}
-          onLimitReached={() => {
-            console.log('Daily limit reached');
-            // In a real app, you might show a premium upgrade screen here
-          }}
         />
       </View>
     </SafeAreaView>

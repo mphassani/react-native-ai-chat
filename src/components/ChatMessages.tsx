@@ -272,7 +272,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
               >
                 <Avatar
                   rounded
-                  icon={{ name: item.isUser ? avatarIcons.user : avatarIcons.bot, type: 'ionicon' }}
+                  icon={{ name: item.isUser ? (avatarIcons.user || 'person') : (avatarIcons.bot || 'sparkles'), type: 'ionicon' }}
                   containerStyle={{
                     backgroundColor: item.isUser ? colors.icon : '#EDB458',
                   }}
@@ -367,20 +367,40 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
           inputContainerStyle={{
             borderBottomWidth: 0,
             paddingVertical: 0,
+            minHeight: 60,
+            height: 60,
           }}
           inputStyle={{
-            maxHeight: 50,
+            maxHeight: 60,
             color: colors.inputText,
-            paddingTop: "3%",
+            paddingTop: 0,
+            paddingBottom: 0,
+            lineHeight: 20,
+            minHeight: 60,
           }}
           rightIcon={
             <Button
               title={inputMultiline ? "Send" : ""}
               disabled={inputText.trim() === '' || isLoading}
               onPress={sendMessage}
-              containerStyle={{ marginLeft: 8 }}
+              containerStyle={{ 
+                marginLeft: 8,
+                height: 60,
+                justifyContent: 'center'
+              }}
               loading={isLoading}
               icon={<Icon name="send" size={24} color={colors.tint} />}
+              buttonStyle={{ 
+                backgroundColor: 'transparent',
+                padding: 0,
+                minWidth: 40,
+                minHeight: 60,
+                height: 60,
+                justifyContent: 'center'
+              }}
+              disabledStyle={{
+                backgroundColor: 'transparent'
+              }}
             />
           }
           autoCapitalize="none"
@@ -390,6 +410,8 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
             marginTop: 0,
             paddingVertical: 0,
             backgroundColor: colors.inputBackground,
+            minHeight: 60,
+            height: 60,
           }}
         />
       </KeyboardAvoidingView>

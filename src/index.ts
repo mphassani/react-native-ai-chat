@@ -6,8 +6,7 @@ export { default as AIChatProvider } from './components/AIChatProvider';
 // Context
 export { 
   MessageProvider, 
-  useMessages, 
-  DEFAULT_FREE_TIER_LIMITS
+  useMessages
 } from './context/MessageContext';
 
 // Hooks
@@ -22,9 +21,7 @@ export {
 
 // Types
 export type { 
-  Message, 
-  MessageLimits, 
-  SubscriptionTier 
+  Message
 } from './context/MessageContext';
 
 export type { 

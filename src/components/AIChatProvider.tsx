@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import { Message, MessageProvider, useMessages } from '../context/MessageContext';
 import ChatMessages from './ChatMessages';
 import { ColorScheme, ThemeColors } from '../utils/theme';
@@ -16,12 +16,6 @@ export interface AIChatProviderProps {
   clearConfirmMessage?: string;
   colorScheme?: ColorScheme;
   theme?: Partial<ThemeColors>;
-  tier?: 'free' | 'premium';
-  limits?: {
-    MAX_DAILY_MESSAGES: number;
-    MAX_HISTORY_ITEMS: number;
-  };
-  onLimitReached?: () => void;
   onError?: (error: Error) => void;
   customMessageHandler?: (message: string) => Promise<string | null>;
   style?: any;
@@ -29,7 +23,7 @@ export interface AIChatProviderProps {
 }
 
 // The internal component that uses the MessageContext
-const AIChatInner: React.FC<Omit<AIChatProviderProps, 'tier' | 'limits' | 'storageKey' | 'onLimitReached'>> = ({
+const AIChatInner: React.FC<AIChatProviderProps> = ({
   welcomeMessage = 'Hello! How can I help you today?',
   apiKey,
   apiEndpoint,
@@ -45,7 +39,7 @@ const AIChatInner: React.FC<Omit<AIChatProviderProps, 'tier' | 'limits' | 'stora
   style = {},
   children
 }) => {
-  const { messages: contextMessages, addMessage, clearMessages, canSendMessage } = useMessages();
+  const { messages: contextMessages, addMessage, clearMessages } = useMessages();
   const [displayMessages, setDisplayMessages] = useState<any[]>([
     {
       id: 'welcome',
@@ -61,10 +55,10 @@ const AIChatInner: React.FC<Omit<AIChatProviderProps, 'tier' | 'limits' | 'stora
     }
 
     try {
-      const prompt = generatePrompt 
-        ? generatePrompt(messageText, 'en') 
+      const prompt = generatePrompt
+        ? generatePrompt(messageText, 'en')
         : `Answer the following question: ${messageText}`;
-      
+
       // Simple fetch to OpenAI API
       const response = await fetch(apiEndpoint || 'https://api.openai.com/v1/chat/completions', {
         method: 'POST',
@@ -80,11 +74,11 @@ const AIChatInner: React.FC<Omit<AIChatProviderProps, 'tier' | 'limits' | 'stora
       });
 
       const data = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(data.error?.message || 'Error calling AI API');
       }
-      
+
       return data.choices[0].message.content;
     } catch (error) {
       if (onError) {
@@ -98,21 +92,15 @@ const AIChatInner: React.FC<Omit<AIChatProviderProps, 'tier' | 'limits' | 'stora
   // Handle sending a message
   const handleSendMessage = async (messageText: string): Promise<string | null> => {
     try {
-      // Check if the user can send a message (subscription limits)
-      const canSend = await canSendMessage();
-      if (!canSend) {
-        return 'You have reached your daily message limit.';
-      }
-      
       // Use the custom message handler if provided, otherwise use the default
       const handler = customMessageHandler || defaultMessageHandler;
       const response = await handler(messageText);
-      
+
       if (response) {
         // Save to context
         await addMessage(messageText, response);
       }
-      
+
       return response;
     } catch (error) {
       if (onError) {
@@ -144,17 +132,16 @@ const AIChatInner: React.FC<Omit<AIChatProviderProps, 'tier' | 'limits' | 'stora
 
 // Main component that provides the MessageContext
 export const AIChatProvider: React.FC<AIChatProviderProps> = (props) => {
-  const { tier, limits, storageKey, onLimitReached } = props;
-  
+  const { storageKey } = props;
+
   return (
-    <MessageProvider 
-      tier={tier} 
-      limits={limits} 
-      storageKey={storageKey}
-      onMessageLimitReached={onLimitReached}
-    >
-      <AIChatInner {...props} />
-    </MessageProvider>
+    <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+      <MessageProvider
+        storageKey={storageKey}
+      >
+        <AIChatInner {...props} />
+      </MessageProvider>
+    </KeyboardAvoidingView>
   );
 };
 
