@@ -28,6 +28,15 @@ jobs:
           node-version: 20
           registry-url: https://registry.npmjs.org/
       - run: npm ci
+      - name: Check version matches tag
+        run: |
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          TAG_VERSION=${GITHUB_REF#refs/tags/}
+          TAG_VERSION=${TAG_VERSION#v}
+          if [ "$PKG_VERSION" != "$TAG_VERSION" ]; then
+            echo "Error: package.json version ($PKG_VERSION) does not match tag version ($TAG_VERSION)"
+            exit 1
+          fi
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}

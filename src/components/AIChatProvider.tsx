@@ -86,13 +86,11 @@ export const AIChatProvider: React.FC<AIChatProviderProps> = (props) => {
   const { storageKey } = props;
 
   return (
-    <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
       <MessageProvider
         storageKey={storageKey}
       >
         <AIChatInner {...props} />
       </MessageProvider>
-    </KeyboardAvoidingView>
   );
 };
 
