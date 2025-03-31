@@ -1,5 +1,5 @@
 {
-  "name": "react-native-ai-chat",
+  "name": "@babelbyte/react-native-ai-chat",
   "version": "0.1.0",
   "description": "React Native AI Chat components and utilities",
   "main": "dist/index.js",
@@ -15,7 +15,7 @@
     "openai",
     "transliteration"
   ],
-  "author": "",
+  "author": "cryterion",
   "license": "MIT",
   "peerDependencies": {
     "react": ">=16.8.0",
@@ -27,5 +27,13 @@
     "@types/react": "^18.0.0",
     "@types/react-native": "^0.70.0",
     "typescript": "^4.9.0"
-  }
-} 
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mphassani/react-native-ai-chat.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mphassani/react-native-ai-chat/issues"
+  },
+  "homepage": "https://github.com/mphassani/react-native-ai-chat#readme"
+}
