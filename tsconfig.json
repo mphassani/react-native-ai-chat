@@ -9,8 +9,12 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "lib": ["es2018", "dom"]
+    "lib": ["es2018", "dom"],
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "noImplicitAny": false
   },
-  "include": ["src"],
+  "include": ["src", "src/**/*.d.ts"],
   "exclude": ["node_modules", "dist"]
 } 

@@ -1,12 +1,12 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { View, TouchableOpacity, FlatList, Alert, Platform, KeyboardAvoidingView, Keyboard, KeyboardEvent } from 'react-native';
-import { Ionicons } from "@expo/vector-icons";
 import { Avatar, ListItem, Button, Input } from "react-native-elements";
 import Markdown from 'react-native-markdown-display';
 import * as Clipboard from 'expo-clipboard';
 import { useClipboard } from '../hooks/useClipboard';
 import ClipboardNotificationBanner from './ClipboardNotificationBanner';
-import { ColorScheme, getTheme, ThemeColors } from '../utils/theme';
+import { getTheme, ThemeColors, ColorScheme } from '../utils/theme';
+import Ionicons from 'react-native-elements/dist/icons/Ionicons';
 
 // Define Message type
 export type Message = {
@@ -64,7 +64,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   
   // Get theme colors
-  const colors = getTheme(colorScheme, theme);
+  const colors = getTheme(colorScheme as ColorScheme, theme);
   
   // Use clipboard hook
   const { visibleSnack, showSnack, hideSnack, copyToClipboard } = useClipboard();
@@ -375,11 +375,12 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
           }}
           rightIcon={
             <Button
-              loading={isLoading}
+              title={inputMultiline ? "Send" : ""}
+              disabled={inputText.trim() === '' || isLoading}
               onPress={sendMessage}
-              icon={<Ionicons name="send" size={24} color={colors.tint} style={{paddingTop: "4%"}}/>}
-              type="clear"
-              buttonStyle={{ padding: 0 }}
+              containerStyle={{ marginLeft: 8 }}
+              loading={isLoading}
+              icon={<Ionicons name="send" size={24} color={colors.tint} />}
             />
           }
           autoCapitalize="none"
