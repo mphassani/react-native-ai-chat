@@ -8,7 +8,7 @@ A React Native package for implementing AI-powered chat interfaces with minimal 
 - 📋 Clipboard integration
 - 🌙 Dark mode support
 - 💬 Message history management
-- 🔑 API key management for AI providers
+- 🎨 Customizable theming
 - 📱 Optimized for mobile
 
 ## Installation
@@ -37,10 +37,18 @@ import { SafeAreaView } from 'react-native';
 import { AIChatProvider } from 'react-native-ai-chat';
 
 export default function App() {
+  // Custom message handler to process messages with your AI service
+  const handleMessages = async (message) => {
+    // Implement your AI logic here
+    // For example, call OpenAI API, Azure, or any other service
+    const response = await callYourAIService(message);
+    return response;
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <AIChatProvider
-        apiKey="your-openai-api-key"
+        customMessageHandler={handleMessages}
         welcomeMessage="Hello! How can I help you today?"
         colorScheme="light"
       />
@@ -60,25 +68,38 @@ import { AIChatProvider } from 'react-native-ai-chat';
 
 // Basic usage
 <AIChatProvider
-  apiKey="your-openai-api-key"
+  customMessageHandler={async (message) => {
+    // Your AI implementation here
+    // This is REQUIRED - you must implement your own AI logic
+    const response = await yourAIService.generateResponse(message);
+    return response;
+  }}
   welcomeMessage="Hello! How can I help you today?"
 />
 
 // Advanced usage
 <AIChatProvider
-  apiKey="your-openai-api-key"
-  apiEndpoint="https://api.openai.com/v1/chat/completions"
+  customMessageHandler={async (message) => {
+    // Your AI implementation here
+    // For example, connecting to OpenAI
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${YOUR_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o-mini',
+        messages: [{ role: 'user', content: message }]
+      })
+    });
+    
+    const data = await response.json();
+    return data.choices[0].message.content;
+  }}
   welcomeMessage="Hello! I'm here to help with translations."
   placeholder="Type your message here..."
   colorScheme="dark"
-  generatePrompt={(message, language) => {
-    return `Translate this to ${language}: ${message}`;
-  }}
-  customMessageHandler={async (message) => {
-    // Custom implementation for handling messages
-    // Return the AI response
-    return "Custom response";
-  }}
 />
 ```
 
@@ -129,7 +150,12 @@ const customTheme = {
 };
 
 <AIChatProvider
-  apiKey="your-openai-api-key"
+  customMessageHandler={async (message) => {
+    // Your AI implementation here
+    // This is REQUIRED - you must implement your own AI logic
+    const response = await yourAIService.generateResponse(message);
+    return response;
+  }}
   theme={customTheme}
 />
 ```

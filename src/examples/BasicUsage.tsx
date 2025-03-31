@@ -9,13 +9,9 @@ import { ColorScheme } from '../utils/theme';
 const BasicUsage: React.FC = () => {
   const [darkMode, setDarkMode] = useState(false);
   const colorScheme: ColorScheme = darkMode ? 'dark' : 'light';
-  
-  // Define a custom prompt generator for this example
-  const generatePrompt = (message: string, language: string): string => {
-    return `Answer the following question in a friendly tone. 
-      Be concise but helpful: ${message}`;
-  };
-  
+  const customMessageHandler = async (message: string) => {
+    return message;
+  }
   return (
     <SafeAreaView style={[
       styles.container, 
@@ -48,11 +44,10 @@ const BasicUsage: React.FC = () => {
       {/* The AIChatProvider component */}
       <View style={styles.chatContainer}>
         <AIChatProvider
-          apiKey="YOUR_API_KEY_HERE" // Replace with your actual API key
           welcomeMessage="Hello! I'm an AI assistant. How can I help you today?"
           colorScheme={colorScheme}
-          generatePrompt={generatePrompt}
           placeholder="Ask me anything..."
+          customMessageHandler={customMessageHandler}
         />
       </View>
     </SafeAreaView>

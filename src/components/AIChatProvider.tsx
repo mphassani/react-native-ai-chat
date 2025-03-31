@@ -6,9 +6,6 @@ import { ColorScheme, ThemeColors } from '../utils/theme';
 
 export interface AIChatProviderProps {
   welcomeMessage?: string;
-  apiKey?: string;
-  apiEndpoint?: string;
-  generatePrompt?: (message: string, language: string) => string;
   storageKey?: string;
   placeholder?: string;
   clearLabel?: string;
@@ -17,7 +14,7 @@ export interface AIChatProviderProps {
   colorScheme?: ColorScheme;
   theme?: Partial<ThemeColors>;
   onError?: (error: Error) => void;
-  customMessageHandler?: (message: string) => Promise<string | null>;
+  customMessageHandler: (message: string) => Promise<string | null>;
   style?: any;
   children?: React.ReactNode;
 }
@@ -25,9 +22,6 @@ export interface AIChatProviderProps {
 // The internal component that uses the MessageContext
 const AIChatInner: React.FC<AIChatProviderProps> = ({
   welcomeMessage = 'Hello! How can I help you today?',
-  apiKey,
-  apiEndpoint,
-  generatePrompt,
   placeholder = 'Type a message...',
   clearLabel,
   clearConfirmTitle,
@@ -48,53 +42,10 @@ const AIChatInner: React.FC<AIChatProviderProps> = ({
     }
   ]);
 
-  // Default message handler using OpenAI
-  const defaultMessageHandler = async (messageText: string): Promise<string | null> => {
-    if (!apiKey) {
-      throw new Error('API key is required for using the default message handler');
-    }
-
-    try {
-      const prompt = generatePrompt
-        ? generatePrompt(messageText, 'en')
-        : `Answer the following question: ${messageText}`;
-
-      // Simple fetch to OpenAI API
-      const response = await fetch(apiEndpoint || 'https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`
-        },
-        body: JSON.stringify({
-          model: 'gpt-3.5-turbo',
-          messages: [{ role: 'user', content: prompt }],
-          max_tokens: 500
-        })
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error?.message || 'Error calling AI API');
-      }
-
-      return data.choices[0].message.content;
-    } catch (error) {
-      if (onError) {
-        onError(error instanceof Error ? error : new Error(String(error)));
-      }
-      console.error('Error in AI message handler:', error);
-      return null;
-    }
-  };
-
   // Handle sending a message
   const handleSendMessage = async (messageText: string): Promise<string | null> => {
     try {
-      // Use the custom message handler if provided, otherwise use the default
-      const handler = customMessageHandler || defaultMessageHandler;
-      const response = await handler(messageText);
+      const response = await customMessageHandler(messageText);
 
       if (response) {
         // Save to context
