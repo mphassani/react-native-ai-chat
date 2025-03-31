@@ -346,9 +346,15 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
       
       {/* Input area with KeyboardAvoidingView */}
       <KeyboardAvoidingView
-        behavior="padding"
+        behavior={Platform.OS === 'ios' ? 'position' : 'height'}
         style={{
-flex:1
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          bottom: 0,
+          borderTopWidth: 1,
+          borderTopColor: colors.border,
+          backgroundColor: colors.inputBackground,
         }}
       >
         <Input
