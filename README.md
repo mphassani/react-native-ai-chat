@@ -16,6 +16,7 @@ A React Native package for implementing AI-powered chat interfaces with minimal 
     </td>
   </tr>
 </table>
+
 ## Features
 
 - 🤖 Pre-built chat UI components
