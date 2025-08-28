@@ -2,6 +2,20 @@
 
 A React Native package for implementing AI-powered chat interfaces with minimal setup. This package provides reusable components for building AI chat experiences with a clean, customizable UI.
 
+<table style="width:100%;">
+  <tr>
+    <td style="text-align:center;">
+      <img width="200" alt="Translit App" src="https://github.com/user-attachments/assets/4b090ad0-f3a4-45fa-acdf-a0e93ece7fa5" />
+      <br>
+      <a href="https://apps.apple.com/us/app/translit-translator-more/id6447789720">Translit</a>
+    </td>
+    <td style="text-align:center;">
+      <img width="200" alt="Book Club App" src="https://github.com/user-attachments/assets/f7913d62-38ab-439c-bb3f-5003e01f8446" />
+      <br>
+      <a href="https://apps.apple.com/us/app/book-club-reading-tracker/id6742517590">Book Club</a>
+    </td>
+  </tr>
+</table>
 ## Features
 
 - 🤖 Pre-built chat UI components
